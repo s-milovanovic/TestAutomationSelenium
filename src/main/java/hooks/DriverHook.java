@@ -15,9 +15,9 @@ import java.time.Duration;
 import java.util.Properties;
 
 public class DriverHook {
-    protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    protected static String browserType;
-    protected static String initialUrl;
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static String browserType;
+    public static String initialUrl;
 
     public static void init() {
         setProperties();
@@ -49,8 +49,8 @@ public class DriverHook {
             props.load(fileInputStream);
             browserType = props.getProperty("browser");
             initialUrl = props.getProperty("initialUrl");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException error) {
+            throw new RuntimeException(error);
         }
     }
 
