@@ -13,12 +13,12 @@ public class FirstTests extends InitHooks {
     public void testRun() {
         InitPages.LoginPage.setUsernameField();
         String title = InitPages.LoginPage.GetTitle();
-        Assert.assertEquals("title", "");
+        Assert.assertEquals(title, "");
     }
     @Test(groups = {"integration"}, description = "Our second Test")
     public void testRun1() {
         InitPages.LoginPage.setUsernameField();
         String title = InitPages.LoginPage.GetTitle();
-        Assert.assertEquals("title", "");
+        Assert.assertEquals(title, "");
     }
 }

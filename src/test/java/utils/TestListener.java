@@ -9,8 +9,6 @@ import com.aventstack.extentreports.reporter.configuration.ViewName;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.util.Arrays;
-
 public class TestListener extends ScreenshotTaker implements ITestListener{
     private static final ExtentReports extent = new ExtentReports();
     private final ExtentSparkReporter reporter = new ExtentSparkReporter("ExtentReport.html");
