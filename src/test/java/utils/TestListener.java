@@ -34,14 +34,14 @@ public class TestListener extends ScreenshotTaker implements ITestListener{
     }
 
     @Override
-    public void onTestSkipped(ITestResult iTestResult) {
+    public synchronized void onTestSkipped(ITestResult iTestResult) {
         extent.createTest(iTestResult.getName())
                 .assignCategory(iTestResult.getMethod().getGroups())
                 .log(Status.SKIP, iTestResult.toString());
     }
 
     @Override
-    public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
+    public synchronized void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
 
     }
 
