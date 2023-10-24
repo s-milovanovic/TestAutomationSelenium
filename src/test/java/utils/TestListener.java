@@ -1,6 +1,7 @@
 package utils;
 
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -11,26 +12,29 @@ public class TestListener extends ScreenshotTaker implements ITestListener{
 
     @Override
     public synchronized void onTestStart(ITestResult iTestResult) {
+        ExtentTest test = extent.createTest(iTestResult.getName());
+        ExtentReportConfig.setExtentTest(test);
     }
 
     @Override
     public synchronized void onTestSuccess(ITestResult iTestResult) {
-        extent.createTest(iTestResult.getName())
-                .assignCategory(iTestResult.getMethod().getGroups())
-                .log(Status.PASS, iTestResult.toString());
+        String testName = iTestResult.getName();
+        ExtentReportConfig.getExtentTest().assignCategory(iTestResult.getMethod().getGroups())
+                .log(Status.PASS, testName + " passed" );
+        ExtentReportConfig.removeExtentTest();
     }
 
     @Override
     public synchronized void onTestFailure(ITestResult iTestResult) {
         String screenshotsDir = "./failed_tests/";
-        String failedTest = iTestResult.getName();
+        String testName = iTestResult.getName();
 
-        takeScreenshot(failedTest);
+        takeScreenshot(testName);
 
-        extent.createTest(failedTest)
-                .addScreenCaptureFromPath(screenshotsDir + failedTest + ".png")
+        ExtentReportConfig.getExtentTest().addScreenCaptureFromPath(screenshotsDir + testName + ".png")
                 .assignCategory(iTestResult.getMethod().getGroups())
                 .log(Status.FAIL, iTestResult.getThrowable());
+        ExtentReportConfig.removeExtentTest();
     }
 
     @Override
@@ -38,6 +42,7 @@ public class TestListener extends ScreenshotTaker implements ITestListener{
         extent.createTest(iTestResult.getName())
                 .assignCategory(iTestResult.getMethod().getGroups())
                 .log(Status.SKIP, iTestResult.toString());
+        ExtentReportConfig.removeExtentTest();
     }
 
     @Override
@@ -47,11 +52,12 @@ public class TestListener extends ScreenshotTaker implements ITestListener{
 
     @Override
     public synchronized void onStart(ITestContext iTestContext) {
-        Report.setReporter(extent);
+        ExtentReportConfig.setReporter(extent);
     }
 
     @Override
     public synchronized void onFinish(ITestContext iTestContext) {
         extent.flush();
+        ExtentReportConfig.removeExtentTest();
     }
 }
